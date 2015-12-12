@@ -5,9 +5,8 @@
 
 class Addition : public ArithmeticExpression
 {
+	using ArithmeticExpression::ArithmeticExpression;
 public:
-	Addition(string leftSide, string rightSide);
-
 	string evaluate();
 	void print();
 };

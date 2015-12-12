@@ -15,7 +15,19 @@ using namespace std;
 
 int main()
 {
-	string bleh;
+	Expression * expression;
+	string expressionInput;
+
+	while (true)
+	{
+		cout << "Enter an expression:\n";
+
+		getline(cin, expressionInput);
+
+		expression = ArithmeticExpression::parse(expressionInput);
+
+		(*expression).print();
+	}
 
     return 0;
 }

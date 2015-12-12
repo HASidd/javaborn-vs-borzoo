@@ -10,10 +10,10 @@ class Expression
 protected:
 	float value;
 public:
-	virtual string evaluate();	// evaluate expression and return string
+	virtual string evaluate() = 0;	// evaluate expression and return string
 								// representation of the result
 
-	virtual void print();		// prints expression
+	virtual void print() = 0;		// prints expression
 };
 
 #endif

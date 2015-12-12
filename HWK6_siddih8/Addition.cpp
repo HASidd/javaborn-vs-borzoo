@@ -1,8 +1,19 @@
 #include "Addition.h"
 
-Addition::Addition(string leftSide, string rightSide)
+#include <iostream>
+using namespace std;
+
+string Addition::evaluate()
 {
-	
-	*left = parse(leftSide);
-	*right = parse(rightSide);
+	return string();
+}
+
+void Addition::print()
+{
+	// Print expression with brackets and calling corresponding print functions
+	cout << "(";
+	(*left).print();
+	cout << "+";
+	(*right).print();
+	cout << ")";
 }

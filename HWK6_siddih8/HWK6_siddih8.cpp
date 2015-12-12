@@ -15,7 +15,7 @@ using namespace std;
 
 int main()
 {
-	std::string bleh;
+	string bleh;
 
     return 0;
 }

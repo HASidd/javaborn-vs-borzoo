@@ -13,30 +13,109 @@ using namespace std;
 #include "Multiplication.h"
 #include "Division.h"
 
+struct operators {
+	char plus = '+';
+	char minus = '-';
+	char divide = '/';
+	char multiply = '*';
+};
+
+bool isValid(string input, operators a);
+
 int main()
 {
+	// Create Expression pointer and string to hold input
 	Expression * expression;
 	string expressionInput = "";
 
+	// Loop until break is called
 	while (true)
 	{
+		// Prompt user for expression
 		cout << "Enter an expression:\n";
-
 		getline(cin, expressionInput);
 
+		// If exit character # is entered, break loop
 		if (expressionInput == "#")
 			break;
 
-		expression = ArithmeticExpression::parse(expressionInput);
+		// Create operators struct for checking validity of input
+		operators a;
 
-		(*expression).print();
+		// If input is a valid expression
+		if (isValid(expressionInput, a))
+		{
+			// Create expression tree from input
+			expression = ArithmeticExpression::parse(expressionInput);
 
-		cout << " = " << (*expression).evaluate() << "\n\n";
+			// Print expression back out
+			(*expression).print();
 
-		delete expression;
+			// Print result
+			cout << " = " << (*expression).evaluate() << "\n\n";
+
+			// Delete expression tree
+			delete expression;
+		}
 	}
 
-	cout << "\n";
-
     return 0;
+}
+
+bool isValid(string input, operators a)
+{
+	bool openbracket = false;
+	bool closebracket = false;
+	bool found = false;
+
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (input.at(i) == a.plus || input.at(i) == a.minus || input.at(i) == a.divide || input.at(i) == a.multiply)
+		{
+			found = true;
+		}
+	}
+
+	if (found == false)
+	{
+		cout << "Input is not an expression:";
+		return false;
+	}
+
+	for (int i = 1; i < input.size(); i++)
+	{
+		if (input.at(i) == a.plus || input.at(i) == a.minus || input.at(i) == a.divide || input.at(i) == a.multiply)
+		{
+			if (input.at(i - 1) == a.plus || input.at(i - 1) == a.minus || input.at(i - 1) == a.divide || input.at(i - 1) == a.multiply)
+			{
+				return false;
+			}
+		}
+	}
+
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (input.at(i) > 'A' && input.at(i) < 'z')
+			return false;
+	}
+
+	int openbracketcounter = 0;
+	int closebracketcounter = 0;
+
+	for (int i = 0; i < input.size(); i++)
+	{
+		if (input.at(i) == '(')
+			openbracketcounter++;
+
+		if (input.at(i) == ')')
+			closebracketcounter++;
+	}
+
+	if (openbracketcounter != closebracketcounter)
+		return false;
+
+	if (input.at(0) == ')')
+		return false;
+
+	return true;
 }

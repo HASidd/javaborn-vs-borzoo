@@ -16,7 +16,7 @@ using namespace std;
 int main()
 {
 	Expression * expression;
-	string expressionInput;
+	string expressionInput = "";
 
 	while (true)
 	{
@@ -24,10 +24,19 @@ int main()
 
 		getline(cin, expressionInput);
 
+		if (expressionInput == "#")
+			break;
+
 		expression = ArithmeticExpression::parse(expressionInput);
 
 		(*expression).print();
+
+		cout << " = " << (*expression).evaluate() << "\n\n";
+
+		delete expression;
 	}
+
+	cout << "\n";
 
     return 0;
 }

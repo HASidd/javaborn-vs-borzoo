@@ -8,10 +8,10 @@ using namespace std;
 class Expression
 {
 protected:
-	float value;
+	int value;
 public:
 	virtual string evaluate() = 0;	// evaluate expression and return string
-								// representation of the result
+									// representation of the result
 
 	virtual void print() = 0;		// prints expression
 };

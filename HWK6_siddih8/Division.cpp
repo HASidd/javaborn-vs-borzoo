@@ -5,7 +5,11 @@ using namespace std;
 
 string Division::evaluate()
 {
-	return string();
+	float result;
+
+	result = convert((*left).evaluate()) / convert((*right).evaluate());
+
+	return to_string(result);
 }
 
 void Division::print()
@@ -13,7 +17,7 @@ void Division::print()
 	// Print expression with brackets and calling corresponding print functions
 	cout << "(";
 	(*left).print();
-	cout << "/";
+	cout << " / ";
 	(*right).print();
 	cout << ")";
 }

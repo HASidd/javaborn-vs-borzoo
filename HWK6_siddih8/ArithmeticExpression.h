@@ -25,6 +25,7 @@ public:
 	string evaluate();
 	void print();
 	float convert(string s);
+	void increment();
 };
 
 #endif

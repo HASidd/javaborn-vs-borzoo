@@ -12,6 +12,7 @@
 
 class Subtraction : public ArithmeticExpression
 {
+	// Inherit ArithmeticExpression constructors
 	using ArithmeticExpression::ArithmeticExpression;
 public:
 	string evaluate();

@@ -61,6 +61,10 @@ int main()
 			// Delete expression tree
 			delete expression;
 		}
+		else
+		{
+			cout << "Expression is not well formed.\n\n";
+		}
 	}
 
     return 0;

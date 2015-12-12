@@ -35,7 +35,6 @@ ArithmeticExpression::~ArithmeticExpression()
 {
 	delete left;
 	delete right;
-	cout << "lol\n";
 }
 
 // Returns value of expression, assuming just a number since no operator specified
@@ -54,10 +53,22 @@ void ArithmeticExpression::print()
 		cout << value;
 }
 
-// Convert 
+// Convert given number in string format to float
 float ArithmeticExpression::convert(string number)
 {
 	return stof(number);
+}
+
+
+void ArithmeticExpression::increment()
+{
+	if (left == NULL)
+		value++;
+	else
+	{
+		(*left).increment();
+		(*right).increment();
+	}
 }
 
 // Parse a given string expression and return corresponding expression tree

@@ -17,10 +17,12 @@ class Expression
 protected:
 	int value;
 public:
+	virtual ~Expression();
 	virtual string evaluate() = 0;	// evaluate expression and return string
 									// representation of the result
 
 	virtual void print() = 0;		// prints expression
+	virtual void increment() = 0;	// increment all numbers in expression
 };
 
 #endif

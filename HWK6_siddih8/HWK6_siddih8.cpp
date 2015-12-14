@@ -5,6 +5,10 @@
 * Description: 		bleh
 */
 
+#define CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 using namespace std;
 
 #include <iostream>
@@ -23,6 +27,8 @@ bool isValid(string input);
 
 int main()
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
 	// Create Expression pointer and string to hold input
 	Expression * expression = NULL;
 	string expressionInput = "";
@@ -92,7 +98,10 @@ bool isValid(string input)
 
 	// Check for invalid characters
 	if (input.find_first_not_of(VALID_CHARACTERS) != string::npos)
+	{
+		cout << "1";
 		return false;
+	}
 
 	// Loop through input characters
 	for (int i = 0; i < input.size(); i++)
@@ -114,7 +123,6 @@ bool isValid(string input)
 
 			// Get first non-space character to left of close bracket
 			currentChar = input.at(input.find_last_not_of(' ', i - 1));
-			cout << currentChar << "\n";
 
 			// If no number found in brackets
 			if (currentChar == '(')
@@ -132,12 +140,24 @@ bool isValid(string input)
 			// Get first non-space character to left of operator
 			if (left.find_last_not_of(' ') == string::npos)
 				return false;
-			else
+			else if (currentChar != '-')	// If operator is not subtraction
+			{
+				// Get first non-space character to left of operator
 				currentChar = left.at(left.find_last_not_of(' '));
 
-			// If character is invalid
-			if (LEFTOPERAND.find(currentChar) == string::npos)
-				return false;
+				// If character is invalid
+				if (LEFTOPERAND.find(currentChar) == string::npos)
+					return false;
+			}
+			else	// If operator is subtraction, include '(' in valid characters
+			{
+				// Get first non-space character to left of operator
+				currentChar = left.at(left.find_last_not_of(' '));
+
+				// If character is invalid
+				if (NUMBER.find(currentChar) == string::npos)
+					return false;
+			}
 
 			// Get first non-space character to right of operator
 			if (right.find_first_not_of(' ') == string::npos)
@@ -153,15 +173,15 @@ bool isValid(string input)
 
 	// Split string at spaces
 	istringstream spaceCheck(input);
-	string token = "", lastToken = "";
+	string token = ")", lastToken = "(";
 
 	while (!spaceCheck.eof())
 	{
 		spaceCheck >> token;
 
 		// If two numbers are found next to each other return false
-		if (lastToken.find_first_of(LEFTOPERAND) != string::npos
-			&& token.find_first_of(RIGHTOPERAND) != string::npos)
+		if (LEFTOPERAND.find(lastToken.at(lastToken.length()-1)) != string::npos
+			&& RIGHTOPERAND.find(token.at(0)) != string::npos)
 		{
 			return false;
 		}

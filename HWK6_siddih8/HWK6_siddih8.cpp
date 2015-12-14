@@ -10,6 +10,8 @@ using namespace std;
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <iomanip>
+#include <algorithm>
 
 #include "Expression.h"
 #include "ArithmeticExpression.h"
@@ -26,6 +28,7 @@ int main()
 	// Create Expression pointer and string to hold input
 	Expression * expression = NULL;
 	string expressionInput = "";
+	float result;
 
 	// Loop until break is called
 	while (true)
@@ -50,14 +53,22 @@ int main()
 
 			// Print new expression out
 			(*expression).print();
+			
+			// Evaluate expression tree
+			result = stof((*expression).evaluate());
 
 			// Print result
-			cout << " = " << (*expression).evaluate() << "\n\n";
+			cout << fixed;
+			cout << setprecision(2);
+			cout << " = " << result << "\n\n";
 		}
 		else if (isValid(expressionInput))	// If input is a valid expression
 		{
 			// Delete previous expression tree
 			delete expression;
+
+			// Remove spaces from input
+			expressionInput.erase(remove_if(expressionInput.begin(), expressionInput.end(), isspace), expressionInput.end());
 
 			// Create expression tree from input
 			expression = ArithmeticExpression::parse(expressionInput);
@@ -65,8 +76,13 @@ int main()
 			// Print expression back out
 			(*expression).print();
 
+			// Evaluate expression tree
+			result = stof((*expression).evaluate());
+
 			// Print result
-			cout << " = " << (*expression).evaluate() << "\n\n";
+			cout << fixed;
+			cout << setprecision(2);
+			cout << " = " << result << "\n\n";
 		}
 		else
 		{

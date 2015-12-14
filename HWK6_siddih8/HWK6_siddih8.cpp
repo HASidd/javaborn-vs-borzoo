@@ -1,13 +1,9 @@
 /*
 * Name:				Hasan Siddiqui, Talha Ali, Asalat Kamal
 * MacID:			siddih8, alit3, kamala6
-* Student Number:	1450148, 1419194, 1426466
-* Description: 		bleh
+* Student Number:	1450148, 1419194, 1417446
+* Description: 		Manages user input and sanity checks, and manages Expression type objects.
 */
-
-#define CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
 
 using namespace std;
 
@@ -27,8 +23,6 @@ bool isValid(string input);
 
 int main()
 {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-
 	// Create Expression pointer and string to hold input
 	Expression * expression = NULL;
 	string expressionInput = "";
@@ -98,10 +92,11 @@ bool isValid(string input)
 
 	// Check for invalid characters
 	if (input.find_first_not_of(VALID_CHARACTERS) != string::npos)
-	{
-		cout << "1";
 		return false;
-	}
+
+	// Check if input is blank
+	if (input.find_first_not_of(' ') == string::npos)
+		return false;
 
 	// Loop through input characters
 	for (int i = 0; i < input.size(); i++)
@@ -175,10 +170,9 @@ bool isValid(string input)
 	istringstream spaceCheck(input);
 	string token = ")", lastToken = "(";
 
-	while (!spaceCheck.eof())
+	// Loop while input stream continues
+	while (spaceCheck >> token)
 	{
-		spaceCheck >> token;
-
 		// If two numbers are found next to each other return false
 		if (LEFTOPERAND.find(lastToken.at(lastToken.length()-1)) != string::npos
 			&& RIGHTOPERAND.find(token.at(0)) != string::npos)

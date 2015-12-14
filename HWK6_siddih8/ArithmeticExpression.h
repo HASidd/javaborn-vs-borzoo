@@ -2,8 +2,9 @@
 /*
 * Name:				Hasan Siddiqui, Talha Ali, Asalat Kamal
 * MacID:			siddih8, alit3, kamala6
-* Student Number:	1450148, 1419194, 1426466
-* Description: 		bleh
+* Student Number:	1450148, 1419194, 1417446
+* Description: 		Operators' parent class declaration, most functions and	child expressions for tree are declared here,
+					though child expressions aren't used in some functions because no operator is defined.
 */
 
 #define ARITHMETIC_H
@@ -25,8 +26,8 @@ public:
 	static Expression * parse(string expression);	// Parses an expression in string format and returns a corresponding expression tree
 	string evaluate();								// Evaluate expression tree and return result in string format
 	void print();									// Print expression
-	float convert(string s);						//
-	void increment();
+	float convert(string s);						// Get float from string representation of number
+	void increment();								// Increment each number in expression tree
 };
 
 #endif

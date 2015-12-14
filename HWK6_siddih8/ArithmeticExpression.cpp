@@ -1,8 +1,9 @@
 /*
 * Name:				Hasan Siddiqui, Talha Ali, Asalat Kamal
 * MacID:			siddih8, alit3, kamala6
-* Student Number:	1450148, 1419194, 1426466
-* Description: 		bleh
+* Student Number:	1450148, 1419194, 1417446
+* Description: 		Operators' parent class implementation, most functions including constructors and destructors defined here,
+					though int value data member is used instead of child expressions in some functions because no operator is defined.
 */
 
 #include "ArithmeticExpression.h"

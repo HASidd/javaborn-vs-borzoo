@@ -1,8 +1,9 @@
 /*
 * Name:				Hasan Siddiqui, Talha Ali, Asalat Kamal
 * MacID:			siddih8, alit3, kamala6
-* Student Number:	1450148, 1419194, 1426466
-* Description: 		bleh
+* Student Number:	1450148, 1419194, 1417446
+* Description: 		Declaration for parent abstract Expression class
+					containing virtual functions.
 */
 
 #ifndef EXPRESSION_H

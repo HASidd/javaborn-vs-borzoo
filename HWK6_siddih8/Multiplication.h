@@ -12,9 +12,10 @@
 
 class Multiplication : public ArithmeticExpression
 {
-	// Inherit ArithmeticExpression constructors
-	using ArithmeticExpression::ArithmeticExpression;
 public:
+	// Inherit ArithmeticExpression constructor
+	Multiplication(string s, string a) :ArithmeticExpression(s, a) {};
+
 	string evaluate();
 	void print();
 };

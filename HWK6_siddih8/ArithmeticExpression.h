@@ -13,18 +13,19 @@
 class ArithmeticExpression : public Expression
 {
 protected:
+	// Pointers for left and right operand expressions
 	Expression *left;
 	Expression *right;
 
 public:
-	ArithmeticExpression(string leftSide, string rightSide);
-	ArithmeticExpression(int number);
-	~ArithmeticExpression();
-	static Expression * parse(string expression);
+	ArithmeticExpression(string leftSide, string rightSide);	// Constructor for ArithmeticExpression from a left and right operand
+	ArithmeticExpression(int number);							// Constructor for ArithmeticExpression from a single value
+	~ArithmeticExpression();									// Destructor for ArithmeticExpression, calls deletion of subtrees
 
-	string evaluate();
-	void print();
-	float convert(string s);
+	static Expression * parse(string expression);	// Parses an expression in string format and returns a corresponding expression tree
+	string evaluate();								// Evaluate expression tree and return result in string format
+	void print();									// Print expression
+	float convert(string s);						//
 	void increment();
 };
 

@@ -9,6 +9,7 @@ using namespace std;
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include "Expression.h"
 #include "ArithmeticExpression.h"
@@ -17,19 +18,13 @@ using namespace std;
 #include "Multiplication.h"
 #include "Division.h"
 
-struct operators {
-	char plus = '+';
-	char minus = '-';
-	char divide = '/';
-	char multiply = '*';
-};
 
-bool isValid(string input, operators a);
+bool isValid(string input);
 
 int main()
 {
 	// Create Expression pointer and string to hold input
-	Expression * expression;
+	Expression * expression = NULL;
 	string expressionInput = "";
 
 	// Loop until break is called
@@ -41,14 +36,29 @@ int main()
 
 		// If exit character # is entered, break loop
 		if (expressionInput == "#")
-			break;
-
-		// Create operators struct for checking validity of input
-		operators a;
-
-		// If input is a valid expression
-		if (isValid(expressionInput, a))
 		{
+			// Delete expression tree if it exists
+			delete expression;
+			break;
+		}
+
+		// If increment character is entered and previous expression exists
+		if (expressionInput == "@" && expression != NULL)
+		{
+			// Increment previous expression tree
+			(*expression).increment();
+
+			// Print new expression out
+			(*expression).print();
+
+			// Print result
+			cout << " = " << (*expression).evaluate() << "\n\n";
+		}
+		else if (isValid(expressionInput))	// If input is a valid expression
+		{
+			// Delete previous expression tree
+			delete expression;
+
 			// Create expression tree from input
 			expression = ArithmeticExpression::parse(expressionInput);
 
@@ -57,9 +67,6 @@ int main()
 
 			// Print result
 			cout << " = " << (*expression).evaluate() << "\n\n";
-
-			// Delete expression tree
-			delete expression;
 		}
 		else
 		{
@@ -70,59 +77,100 @@ int main()
     return 0;
 }
 
-bool isValid(string input, operators a)
+// Check if given expression is well-formed
+bool isValid(string input)
 {
-	bool openbracket = false;
-	bool closebracket = false;
-	bool found = false;
+	const string OPERATOR = "+-*/";				// Define string containing operators
+	const string NUMBER = "1234567890()";		// Define string containing appropriate characters to hold a number
+	const string LEFTOPERAND = "1234567890)";	// Define string containing appropriate characters to left of operator
+	const string RIGHTOPERAND = "1234567890(";	// Define string containing appropriate characters to right of operator
+	const string VALID_CHARACTERS = "1234567890+-*/() ";	// Define string containing valid characters
 
-	for (int i = 0; i < input.size(); i++)
-	{
-		if (input.at(i) == a.plus || input.at(i) == a.minus || input.at(i) == a.divide || input.at(i) == a.multiply)
-		{
-			found = true;
-		}
-	}
+	string left, right;							// Strings to hold left and right side of operator
+	char currentChar;							// Current character being checked
+	int leftBrackets = 0, rightBrackets = 0;	// Left and right bracket counters
 
-	if (found == false)
-	{
-		cout << "Input is not an expression:";
+	// Check for invalid characters
+	if (input.find_first_not_of(VALID_CHARACTERS) != string::npos)
 		return false;
-	}
 
-	for (int i = 1; i < input.size(); i++)
-	{
-		if (input.at(i) == a.plus || input.at(i) == a.minus || input.at(i) == a.divide || input.at(i) == a.multiply)
-		{
-			if (input.at(i - 1) == a.plus || input.at(i - 1) == a.minus || input.at(i - 1) == a.divide || input.at(i - 1) == a.multiply)
-			{
-				return false;
-			}
-		}
-	}
-
+	// Loop through input characters
 	for (int i = 0; i < input.size(); i++)
 	{
-		if (input.at(i) > 'A' && input.at(i) < 'z')
-			return false;
-	}
+		currentChar = input.at(i);
 
-	int openbracketcounter = 0;
-	int closebracketcounter = 0;
-
-	for (int i = 0; i < input.size(); i++)
-	{
+		// Count number of open brackets
 		if (input.at(i) == '(')
-			openbracketcounter++;
+			leftBrackets++;
 
+		// Count number of close brackets
 		if (input.at(i) == ')')
-			closebracketcounter++;
+		{
+			rightBrackets++;
+
+			// If unpaired right bracket is found, return false
+			if (rightBrackets > leftBrackets)
+				return false;
+
+			// Get first non-space character to left of close bracket
+			currentChar = input.at(input.find_last_not_of(' ', i - 1));
+			cout << currentChar << "\n";
+
+			// If no number found in brackets
+			if (currentChar == '(')
+				return false;
+		}
+
+
+		// If current character is in OPERATORS
+		if (OPERATOR.find(currentChar) != string::npos)
+		{
+			// Get strings to left and right of operator
+			left = input.substr(0, i);
+			right = input.substr(i + 1, input.length() - i - 1);
+
+			// Get first non-space character to left of operator
+			if (left.find_last_not_of(' ') == string::npos)
+				return false;
+			else
+				currentChar = left.at(left.find_last_not_of(' '));
+
+			// If character is invalid
+			if (LEFTOPERAND.find(currentChar) == string::npos)
+				return false;
+
+			// Get first non-space character to right of operator
+			if (right.find_first_not_of(' ') == string::npos)
+				return false;
+			else
+				currentChar = right.at(right.find_first_not_of(' '));
+
+			// If character is invalid
+			if (RIGHTOPERAND.find(currentChar) == string::npos)
+				return false;
+		}
 	}
 
-	if (openbracketcounter != closebracketcounter)
-		return false;
+	// Split string at spaces
+	istringstream spaceCheck(input);
+	string token = "", lastToken = "";
 
-	if (input.at(0) == ')')
+	while (!spaceCheck.eof())
+	{
+		spaceCheck >> token;
+
+		// If two numbers are found next to each other return false
+		if (lastToken.find_first_of(LEFTOPERAND) != string::npos
+			&& token.find_first_of(RIGHTOPERAND) != string::npos)
+		{
+			return false;
+		}
+
+		lastToken = token;
+	}
+
+	// Check if number of open and close brackets match
+	if (leftBrackets != rightBrackets)
 		return false;
 
 	return true;

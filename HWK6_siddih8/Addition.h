@@ -12,9 +12,10 @@
 
 class Addition : public ArithmeticExpression
 {
-	// Inherit ArithmeticExpression constructors
-	using ArithmeticExpression::ArithmeticExpression;
 public:
+	// Inherit ArithmeticExpression constructor
+	Addition(string s, string a) :ArithmeticExpression(s, a) {};
+
 	string evaluate();
 	void print();
 };

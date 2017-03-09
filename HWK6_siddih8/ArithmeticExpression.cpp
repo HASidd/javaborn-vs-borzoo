@@ -15,7 +15,9 @@
 #include <iostream>
 
 using namespace std;
-
+/* The purpose of this class is to provide functions that cover the whole program's arthmetic progression. It uses many contructors and destructors
+ * to achieve it's goal of recursivley breaking down the equation.
+ */
 // Create an expression consisting of a left and right operand
 ArithmeticExpression::ArithmeticExpression(string leftSide, string rightSide)
 {
@@ -60,7 +62,7 @@ float ArithmeticExpression::convert(string number)
 	return stof(number);
 }
 
-
+//Increments the pointers position by one until NULL is found in the left.
 void ArithmeticExpression::increment()
 {
 	if (left == NULL)
@@ -83,12 +85,10 @@ Expression * ArithmeticExpression::parse(string expression)
 	// Begin from start of string
 	for (int i = 0; i < expression.length(); i++)
 	{
-		// If left bracket is encountered
+		// If left bracket is encountered, then store location of left bracket
 		if (expression.at(i) == '(')
 		{
-			// Store location of left bracket
 			leftBracket = i;
-
 			int bracketLevel = 1;
 
 			// Increment i until matching right bracket is found
@@ -102,7 +102,7 @@ Expression * ArithmeticExpression::parse(string expression)
 					bracketLevel++;
 			}
 
-			// Store location of right bracket
+			// Finally Store location of right bracket
 			rightBracket = i;
 		}
 
@@ -164,8 +164,7 @@ Expression * ArithmeticExpression::parse(string expression)
 
 	// If brackets were found
 	if (leftBracket != -1)
-		// No operators were found outside brackets
-		// Parse contents inside brackets
+		// No operators were found outside brackets, Parse contents inside brackets
 		return parse(expression.substr(leftBracket + 1, rightBracket - leftBracket - 1));
 
 	// No valid operations were found, therefore expression is a number

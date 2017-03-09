@@ -20,7 +20,8 @@ using namespace std;
 #include "Multiplication.h"
 #include "Division.h"
 
-
+// The main class is used as the main process for the program, it will handle the different inputs of the program and output the corresponding errors.
+// The class will also handle any IsValid logic as it will make it easier to locate errors within the string. 
 bool isValid(string input);
 
 int main()
@@ -93,14 +94,16 @@ int main()
     return 0;
 }
 
-// Check if given expression is well-formed
+// Check if given expression is well-formed, by well formed this means that it doesn't have any invalid characters and to see if the
+// exoression being evaluated is correct
 bool isValid(string input)
 {
-	const string OPERATOR = "+-*/";				// Define string containing operators
-	const string NUMBER = "1234567890()";		// Define string containing appropriate characters to hold a number
-	const string LEFTOPERAND = "1234567890)";	// Define string containing appropriate characters to left of operator
-	const string RIGHTOPERAND = "1234567890(";	// Define string containing appropriate characters to right of operator
-	const string VALID_CHARACTERS = "1234567890+-*/() ";	// Define string containing valid characters
+	//Below are the constant allocation for logic analysis
+	const string OPERATOR = "+-*/";				
+	const string NUMBER = "1234567890()";		
+	const string LEFTOPERAND = "1234567890)";	
+	const string RIGHTOPERAND = "1234567890(";	
+	const string VALID_CHARACTERS = "1234567890+-*/() ";	
 
 	string left, right;							// Strings to hold left and right side of operator
 	char currentChar;							// Current character being checked
@@ -114,7 +117,7 @@ bool isValid(string input)
 	if (input.find_first_not_of(' ') == string::npos)
 		return false;
 
-	// Loop through input characters
+	// Loop through input characters, and begins the main process of the function
 	for (int i = 0; i < input.size(); i++)
 	{
 		currentChar = input.at(i);
@@ -186,10 +189,9 @@ bool isValid(string input)
 	istringstream spaceCheck(input);
 	string token = ")", lastToken = "(";
 
-	// Loop while input stream continues
+	// Loop while input stream continues to see If two numbers are found next to each other return false
 	while (spaceCheck >> token)
 	{
-		// If two numbers are found next to each other return false
 		if (LEFTOPERAND.find(lastToken.at(lastToken.length()-1)) != string::npos
 			&& RIGHTOPERAND.find(token.at(0)) != string::npos)
 		{
